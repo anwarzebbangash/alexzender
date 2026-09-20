@@ -22,8 +22,8 @@ const categories = [
   { name: "SaaS", icon: Rocket },
 ];
 
-export default function Home() {
-  const posts = getAllPostsMeta();
+export default async function Home() {
+  const posts = await getAllPostsMeta();
   const featuredPosts = posts.slice(0, 3);
   const latestPosts = posts.slice(0, 6);
 

@@ -1,86 +1,87 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-import { remark } from "remark";
-import html from "remark-html";
+import { Op } from "sequelize";
 import readingTime from "reading-time";
-import { Post, PostMeta, PostFrontmatter } from "@/types/post";
+import Article from "@/models/Article";
+import { User } from "@/models/User";
 
-const postsDirectory = path.join(process.cwd(), "content");
-
-// Get all post slugs (filenames without .md extension)
-export function getAllPostSlugs(): string[] {
-  const fileNames = fs.readdirSync(postsDirectory);
-  return fileNames
-    .filter((fileName) => fileName.endsWith(".md"))
-    .map((fileName) => fileName.replace(/\.md$/, ""));
-}
-
-// Get metadata for all posts (used in blog listing pages)
-export function getAllPostsMeta(): PostMeta[] {
-  const slugs = getAllPostSlugs();
-
-  const posts = slugs.map((slug) => {
-    const fullPath = path.join(postsDirectory, `${slug}.md`);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { data, content } = matter(fileContents);
-    const stats = readingTime(content);
-
-    return {
-      slug,
-      ...(data as PostFrontmatter),
-      readingTime: stats.text,
-    };
-  });
-
-  // Sort posts by date, newest first
-  return posts.sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1));
-}
-
-// Get full post data (metadata + rendered HTML content) for a single post
-export async function getPostBySlug(slug: string): Promise<Post> {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
-
-  const processedContent = await remark().use(html).process(content);
-  const contentHtml = processedContent.toString();
-
-  const stats = readingTime(content);
-
+// Ek Article record ko frontend ke liye "PostMeta" shape mein badalta hai
+function toPostMeta(article: any) {
+  const stats = readingTime(article.content || "");
   return {
-    slug,
-    content: contentHtml,
+    slug: article.slug,
+    title: article.title,
+    description: article.description,
+    image: article.featured_image,
+    date: article.published_at,
+    author: article.author?.name || "Admin",
+    category: article.category,
+    tags: article.tags || [],
     readingTime: stats.text,
-    ...(data as PostFrontmatter),
   };
 }
 
-// Get posts filtered by category
-export function getPostsByCategory(category: string): PostMeta[] {
-  const allPosts = getAllPostsMeta();
+// Sirf published articles ke slugs (generateStaticParams ke liye)
+export async function getAllPostSlugs(): Promise<string[]> {
+  const articles = await Article.findAll({
+    attributes: ["slug"],
+    where: { published_at: { [Op.ne]: null } },
+  });
+  return articles.map((a: any) => a.slug);
+}
+
+// Blog listing page ke liye sab published articles ki metadata
+export async function getAllPostsMeta() {
+  const articles = await Article.findAll({
+    where: { published_at: { [Op.ne]: null } },
+    include: [{ model: User, as: "author", attributes: ["name"] }],
+    order: [["published_at", "DESC"]],
+  });
+  return articles.map(toPostMeta);
+}
+
+// Ek specific article, uska poora content ke saath
+export async function getPostBySlug(slug: string) {
+  const article: any = await Article.findOne({
+    where: { slug, published_at: { [Op.ne]: null } },
+    include: [{ model: User, as: "author", attributes: ["name"] }],
+  });
+
+  if (!article) throw new Error("Post not found");
+
+  const stats = readingTime(article.content || "");
+  return {
+    slug: article.slug,
+    title: article.title,
+    description: article.description,
+    image: article.featured_image,
+    date: article.published_at,
+    author: article.author?.name || "Admin",
+    category: article.category,
+    tags: article.tags || [],
+    content: article.content, // Ye already HTML hai (react-quill se aayi)
+    readingTime: stats.text,
+  };
+}
+
+export async function getPostsByCategory(category: string) {
+  const allPosts = await getAllPostsMeta();
   return allPosts.filter(
     (post) => post.category.toLowerCase() === category.toLowerCase(),
   );
 }
-// Get related posts (same category, excluding current post)
-export function getRelatedPosts(
+
+export async function getRelatedPosts(
   currentSlug: string,
   category: string,
   limit = 3,
-): PostMeta[] {
-  const allPosts = getAllPostsMeta();
+) {
+  const allPosts = await getAllPostsMeta();
   return allPosts
     .filter((post) => post.slug !== currentSlug && post.category === category)
     .slice(0, limit);
 }
 
-// Get previous and next posts (based on date order)
-export function getAdjacentPosts(currentSlug: string): {
-  previous: PostMeta | null;
-  next: PostMeta | null;
-} {
-  const allPosts = getAllPostsMeta();
+export async function getAdjacentPosts(currentSlug: string) {
+  const allPosts = await getAllPostsMeta();
   const currentIndex = allPosts.findIndex((post) => post.slug === currentSlug);
 
   if (currentIndex === -1) {
@@ -94,7 +95,7 @@ export function getAdjacentPosts(currentSlug: string): {
   };
 }
 
-// Extract headings (h2, h3) from HTML content for Table of Contents
+// Ye 2 functions pure string-processing hain, database se lena-dena nahi — bilkul same rahenge
 export interface Heading {
   id: string;
   text: string;
@@ -119,7 +120,6 @@ export function extractHeadings(htmlContent: string): Heading[] {
   return headings;
 }
 
-// Add id attributes to headings in HTML so we can link to them
 export function addHeadingIds(htmlContent: string): string {
   return htmlContent.replace(/<h([23])>(.*?)<\/h\1>/g, (_match, level, text) => {
     const cleanText = text.replace(/<[^>]+>/g, "");

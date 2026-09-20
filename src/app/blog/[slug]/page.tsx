@@ -21,7 +21,7 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllPostSlugs();
+  const slugs = await getAllPostSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -74,8 +74,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     day: "numeric",
   });
 
-  const relatedPosts = getRelatedPosts(post.slug, post.category);
-  const { previous, next } = getAdjacentPosts(post.slug);
+  const relatedPosts = await getRelatedPosts(post.slug, post.category);
+  const { previous, next } = await getAdjacentPosts(post.slug);
   const headings = extractHeadings(post.content);
   const contentWithIds = addHeadingIds(post.content);
   const jsonLd = {
@@ -156,13 +156,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <TableOfContents headings={headings} />
             </div>
 
-                   <div
-            className="blog-content prose prose-gray mt-8 max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-pre:bg-transparent prose-pre:p-0"
-            dangerouslySetInnerHTML={{ __html: contentWithIds }}
-          />
+            <div
+              className="blog-content prose prose-gray mt-8 max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-pre:bg-transparent prose-pre:p-0"
+              dangerouslySetInnerHTML={{ __html: contentWithIds }}
+            />
 
             <div className="mt-10 flex flex-wrap gap-2 border-t border-gray-200 pt-6 dark:border-gray-800">
-              {post.tags.map((tag) => (
+              {post.tags.map((tag: string) => (
                 <span
                   key={tag}
                   className="rounded-full border border-gray-200 px-3 py-1 text-xs text-gray-600 dark:border-gray-800 dark:text-gray-400"
@@ -181,9 +181,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <aside className="hidden lg:block">
             <div className="sticky top-24">
               <TableOfContents headings={headings} />
-                     </div>
-        </aside>
-      </div>
+            </div>
+          </aside>
+        </div>
       </div>
       <CodeCopyButtons />
     </>

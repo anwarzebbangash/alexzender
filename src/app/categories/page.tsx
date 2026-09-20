@@ -24,8 +24,8 @@ const categoryIcons: Record<string, LucideIcon> = {
   Productivity: Zap,
 };
 
-export default function CategoriesPage() {
-  const posts = getAllPostsMeta();
+export default async function CategoriesPage() {
+  const posts = await getAllPostsMeta();
 
   const categoryCounts = posts.reduce<Record<string, number>>((acc, post) => {
     acc[post.category] = (acc[post.category] || 0) + 1;

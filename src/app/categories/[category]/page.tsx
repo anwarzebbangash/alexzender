@@ -8,14 +8,17 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPostsMeta();
+  const posts = await getAllPostsMeta();
   const categories = Array.from(new Set(posts.map((p) => p.category)));
   return categories.map((cat) => ({
     category: cat.toLowerCase().replace(/\s+/g, "-"),
   }));
 }
 
-function findCategoryBySlug(slug: string, posts: ReturnType<typeof getAllPostsMeta>) {
+function findCategoryBySlug(
+  slug: string,
+  posts: Awaited<ReturnType<typeof getAllPostsMeta>>
+) {
   const allCategories = Array.from(new Set(posts.map((p) => p.category)));
   return allCategories.find(
     (cat) => cat.toLowerCase().replace(/\s+/g, "-") === slug
@@ -24,10 +27,10 @@ function findCategoryBySlug(slug: string, posts: ReturnType<typeof getAllPostsMe
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = await params;
-  const allPosts = getAllPostsMeta();
+  const allPosts = await getAllPostsMeta();
   const actualCategoryName = findCategoryBySlug(category, allPosts);
   const posts = actualCategoryName
-    ? getPostsByCategory(actualCategoryName)
+    ? await getPostsByCategory(actualCategoryName)
     : [];
 
   return (

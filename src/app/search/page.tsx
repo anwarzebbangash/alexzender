@@ -1,8 +1,8 @@
 import { getAllPostsMeta } from "@/lib/posts";
 import { SearchResults } from "@/components/search-results";
 
-export default function SearchPage() {
-  const posts = getAllPostsMeta();
+export default async function SearchPage() {
+  const posts = await getAllPostsMeta();
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
