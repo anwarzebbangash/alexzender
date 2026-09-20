@@ -43,7 +43,7 @@ export default function ContactPage() {
           <div>
             <p className="text-xs text-gray-500 dark:text-gray-400">Email</p>
                <p className="text-sm font-medium text-gray-900 dark:text-white break-all">
-              anwarzebkhanbangash655@gmail.com
+iam777khan@gmail.com
             </p>
           </div>
         </div>
