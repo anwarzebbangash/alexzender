@@ -13,13 +13,14 @@ import { BlogCard } from "@/components/blog-card";
 import { CategoryCard } from "@/components/category-card";
 import { Newsletter } from "@/components/newsletter";
 
+// Yahan humne database values ke sath match karne ke liye 'slug' add kiya hai
 const categories = [
-  { name: "AI Tools", icon: Sparkles },
-  { name: "Web Development", icon: Code2 },
-  { name: "JavaScript", icon: Braces },
-  { name: "Next.js", icon: Layers },
-  { name: "Node.js", icon: Server },
-  { name: "SaaS", icon: Rocket },
+  { name: "Frontend", slug: "frontend", icon: Code2 },
+  { name: "Backend", slug: "backend", icon: Server },
+  { name: "AI & ML", slug: "ai-ml", icon: Sparkles },
+  { name: "DevOps", slug: "devops", icon: Rocket },
+  { name: "Database", slug: "database", icon: Layers },
+  { name: "Other Tech", slug: "other", icon: Braces },
 ];
 
 export default async function Home() {
@@ -91,12 +92,13 @@ export default async function Home() {
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
           {categories.map((category) => {
+            // Yahan ab hum 'name' ke bajaye 'slug' ko match kar rahe hain
             const count = posts.filter(
-              (p) => p.category.toLowerCase() === category.name.toLowerCase()
+              (p) => p.category === category.slug
             ).length;
             return (
               <CategoryCard
-                key={category.name}
+                key={category.slug}
                 name={category.name}
                 count={count}
                 icon={category.icon}
