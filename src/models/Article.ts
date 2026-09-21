@@ -73,10 +73,6 @@ Article.init(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: User,
-        key: 'id',
-      },
     },
   },
   {
@@ -86,10 +82,5 @@ Article.init(
     underscored: true,
   }
 );
-
-Article.belongsTo(User, {
-  foreignKey: 'user_id',
-  as: 'author',
-});
 
 export default Article;
