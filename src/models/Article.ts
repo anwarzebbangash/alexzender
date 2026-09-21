@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '@/lib/database';
-import { User } from './User';
+
 
 export class Article extends Model {
   declare id: number;

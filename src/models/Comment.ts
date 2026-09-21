@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '@/lib/database';
-import { Article } from './Article';
+
 
 export class Comment extends Model {
   declare id: number;
@@ -22,11 +22,6 @@ Comment.init(
     article_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: Article,
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
     },
     author_name: {
       type: DataTypes.STRING(255),
