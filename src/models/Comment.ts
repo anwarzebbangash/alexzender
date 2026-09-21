@@ -1,6 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '@/lib/database';
-
+import { DataTypes, Model } from "sequelize";
+import sequelize from "@/lib/database";
 
 export class Comment extends Model {
   declare id: number;
@@ -49,10 +48,9 @@ Comment.init(
   },
   {
     sequelize,
-    tableName: 'comments',
+    tableName: "comments",
     timestamps: false,
-  }
+  },
 );
-
 
 export default Comment;

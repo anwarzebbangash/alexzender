@@ -1,6 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '@/lib/database';
-
+import { DataTypes, Model } from "sequelize";
+import sequelize from "@/lib/database";
 
 export class Article extends Model {
   declare id: number;
@@ -35,7 +34,7 @@ Article.init(
       unique: true,
     },
     content: {
-      type: DataTypes.TEXT('long'),
+      type: DataTypes.TEXT("long"),
       allowNull: false,
     },
     description: {
@@ -43,8 +42,15 @@ Article.init(
       allowNull: true,
     },
     category: {
-      type: DataTypes.ENUM('backend', 'frontend', 'ai-ml', 'devops', 'database', 'other'),
-      defaultValue: 'other',
+      type: DataTypes.ENUM(
+        "backend",
+        "frontend",
+        "ai-ml",
+        "devops",
+        "database",
+        "other",
+      ),
+      defaultValue: "other",
     },
     tags: {
       type: DataTypes.JSON,
@@ -77,10 +83,10 @@ Article.init(
   },
   {
     sequelize,
-    tableName: 'articles',
+    tableName: "articles",
     timestamps: true,
     underscored: true,
-  }
+  },
 );
 
 export default Article;
