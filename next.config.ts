@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["sequelize", "mysql2"],
+  outputFileTracingIncludes: {
+    "/**/*": ["./node_modules/mysql2/**/*"],
+  },
   images: {
     remotePatterns: [
       {
