@@ -23,7 +23,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["src", "scripts"],
-  "references": [{ "path": "./tsconfig.node.json" }],
+  // "references": [{ "path": "./tsconfig.node.json" }],
   "ts-node": {
     "esm": true,
     "experimentalEsm": true,
