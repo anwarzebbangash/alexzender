@@ -59,9 +59,5 @@ Comment.init(
   }
 );
 
-Comment.belongsTo(Article, {
-  foreignKey: 'article_id',
-  as: 'article',
-});
 
 export default Comment;
