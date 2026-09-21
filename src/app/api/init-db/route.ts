@@ -5,7 +5,7 @@ import "@/models";
 export async function GET() {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     return NextResponse.json({
       success: true,
       message: "Tables created/updated successfully",
