@@ -21,21 +21,31 @@ function toPostMeta(article: any) {
 
 // Sirf published articles ke slugs (generateStaticParams ke liye)
 export async function getAllPostSlugs(): Promise<string[]> {
-  const articles = await Article.findAll({
-    attributes: ["slug"],
-    where: { published_at: { [Op.ne]: null } },
-  });
-  return articles.map((a: any) => a.slug);
+  try {
+    const articles = await Article.findAll({
+      attributes: ["slug"],
+      where: { published_at: { [Op.ne]: null } },
+    });
+    return articles.map((a: any) => a.slug);
+  } catch (error) {
+    console.error("getAllPostSlugs failed (table may not exist yet):", error);
+    return [];
+  }
 }
 
 // Blog listing page ke liye sab published articles ki metadata
 export async function getAllPostsMeta() {
-  const articles = await Article.findAll({
-    where: { published_at: { [Op.ne]: null } },
-    include: [{ model: User, as: "author", attributes: ["name"] }],
-    order: [["published_at", "DESC"]],
-  });
-  return articles.map(toPostMeta);
+  try {
+    const articles = await Article.findAll({
+      where: { published_at: { [Op.ne]: null } },
+      include: [{ model: User, as: "author", attributes: ["name"] }],
+      order: [["published_at", "DESC"]],
+    });
+    return articles.map(toPostMeta);
+  } catch (error) {
+    console.error("getAllPostsMeta failed (table may not exist yet):", error);
+    return [];
+  }
 }
 
 // Ek specific article, uska poora content ke saath
