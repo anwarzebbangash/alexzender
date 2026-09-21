@@ -15,7 +15,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "bundler",
-    "esModuleInterop": true,
+"baseUrl": ".",
+"paths": {
+  "@/*": ["src/*"]
+},
+"esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
   "include": ["src", "scripts"],
