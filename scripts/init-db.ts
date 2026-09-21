@@ -1,6 +1,9 @@
 import sequelize from '../src/lib/database';
 import { User, Article, Subscriber, Comment } from '../src/models';
 
+// Ensure models are loaded before sync
+const models = [User, Article, Subscriber, Comment];
+
 async function initializeDatabase() {
   try {
     console.log('🔄 Connecting to database...');

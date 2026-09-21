@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Link2, Mail } from "lucide-react"; 
+import { Mail } from "lucide-react";
 
 // 1. Add a custom SVG component for LinkedIn
 const LinkedinIcon = (props: React.ComponentProps<"svg">) => (
