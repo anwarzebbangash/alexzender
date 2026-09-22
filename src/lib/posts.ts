@@ -1,7 +1,6 @@
 import { Op } from "sequelize";
 import readingTime from "reading-time";
-import Article from "@/models/Article";
-import { User } from "@/models/User";
+import { Article, User } from "@/models";
 
 // Ek Article record ko frontend ke liye "PostMeta" shape mein badalta hai
 function toPostMeta(article: any) {
