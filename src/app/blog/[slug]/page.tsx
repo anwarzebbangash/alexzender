@@ -15,6 +15,7 @@ import { PostNavigation } from "@/components/post-navigation";
 import { TableOfContents } from "@/components/table-of-contents";
 import { ShareButtons } from "@/components/share-buttons";
 import { CodeCopyButtons } from "@/components/code-copy-buttons";
+export const revalidate = 0;
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;

@@ -12,7 +12,7 @@ import { getAllPostsMeta } from "@/lib/posts";
 import { BlogCard } from "@/components/blog-card";
 import { CategoryCard } from "@/components/category-card";
 import { Newsletter } from "@/components/newsletter";
-
+export const revalidate = 0;
 // Yahan humne database values ke sath match karne ke liye 'slug' add kiya hai
 const categories = [
   { name: "Frontend", slug: "frontend", icon: Code2 },

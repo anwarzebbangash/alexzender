@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getAllPostsMeta, getPostsByCategory } from "@/lib/posts";
 import { BlogCard } from "@/components/blog-card";
+export const revalidate = 0;
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;

@@ -1,5 +1,6 @@
 import { getAllPostsMeta } from "@/lib/posts";
 import { BlogListing } from "@/components/blog-listing";
+export const revalidate = 0;
 
 export default async function BlogPage() {
   const posts = await getAllPostsMeta();

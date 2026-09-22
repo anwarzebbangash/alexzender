@@ -11,6 +11,7 @@ import {
   LucideIcon,
 } from "lucide-react";
 import { getAllPostsMeta } from "@/lib/posts";
+export const revalidate = 0;
 
 const categoryIcons: Record<string, LucideIcon> = {
   "AI Tools": Sparkles,
