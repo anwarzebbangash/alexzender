@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken } from "@/lib/auth";
+import { jwtVerify } from "jose";
 
-export function middleware(request: NextRequest) {
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
+
+export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
 
-  // Login page ko khud protect nahi karna — warna koi login hi nahi kar payega
   if (request.nextUrl.pathname === "/admin/login") {
     return NextResponse.next();
   }
@@ -13,13 +14,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
-  const decoded = verifyToken(token);
+  try {
+    const { payload } = await jwtVerify(token, JWT_SECRET);
 
-  if (!decoded || decoded.role !== "admin") {
+    if (payload.role !== "admin") {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+
+    return NextResponse.next();
+  } catch {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
-
-  return NextResponse.next();
 }
 
 export const config = {

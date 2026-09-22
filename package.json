@@ -16,6 +16,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "gray-matter": "^4.0.3",
+    "jose": "^6.2.12",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.34.0",
     "mongoose": "^9.10.1",
