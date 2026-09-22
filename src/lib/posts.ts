@@ -11,7 +11,7 @@ function toPostMeta(article: any) {
     description: article.description,
     image: article.featured_image,
     date: article.published_at,
-    author: article.author?.name || "Admin",
+    author: article.author?.email || "Admin",
     category: article.category,
     tags: article.tags || [],
     readingTime: stats.text,
@@ -37,7 +37,7 @@ export async function getAllPostsMeta() {
   try {
     const articles = await Article.findAll({
       where: { published_at: { [Op.ne]: null } },
-      include: [{ model: User, as: "author", attributes: ["name"] }],
+     include: [{ model: User, as: "author", attributes: ["email"] }],
       order: [["published_at", "DESC"]],
     });
     return articles.map(toPostMeta);
@@ -51,7 +51,7 @@ export async function getAllPostsMeta() {
 export async function getPostBySlug(slug: string) {
   const article: any = await Article.findOne({
     where: { slug, published_at: { [Op.ne]: null } },
-    include: [{ model: User, as: "author", attributes: ["name"] }],
+   include: [{ model: User, as: "author", attributes: ["email"] }],
   });
 
   if (!article) throw new Error("Post not found");
@@ -63,7 +63,7 @@ export async function getPostBySlug(slug: string) {
     description: article.description,
     image: article.featured_image,
     date: article.published_at,
-    author: article.author?.name || "Admin",
+    author: article.author?.email || "Admin",
     category: article.category,
     tags: article.tags || [],
     content: article.content, // Ye already HTML hai (react-quill se aayi)
