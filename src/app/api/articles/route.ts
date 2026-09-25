@@ -42,3 +42,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
   }
 }
+export async function GET() {
+  try {
+    const articles = await Article.findAll({
+      order: [["created_at", "DESC"]],
+    });
+    return NextResponse.json({ success: true, articles });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
+  }
+}
