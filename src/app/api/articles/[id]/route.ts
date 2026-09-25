@@ -6,7 +6,7 @@ function getToken(request: Request) {
   return request.headers.get("cookie")?.split("token=")[1]?.split(";")[0];
 }
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const article = await Article.findByPk(id);

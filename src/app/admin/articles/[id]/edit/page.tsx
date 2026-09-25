@@ -18,7 +18,7 @@ export default function EditArticlePage() {
   const [category, setCategory] = useState("other");
   const [featuredImage, setFeaturedImage] = useState("");
   const [content, setContent] = useState("");
-  const [published, setPublished] = useState(false);
+ const [, setPublished] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
