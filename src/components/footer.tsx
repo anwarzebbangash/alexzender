@@ -54,7 +54,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2">
                        <Link href="/" className="text-xl font-bold tracking-tight">
-              AlexTec
+              AlexxTech
             </Link>
             <p className="mt-3 max-w-sm text-sm text-gray-600 dark:text-gray-400">
               Practical tutorials on AI tools, web development, JavaScript,
@@ -102,7 +102,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-gray-200 pt-6 text-sm text-gray-500 dark:border-gray-800 dark:text-gray-400">
-                  © {year} AlexTec. All rights reserved.
+                  © {year} AlexxTech. All rights reserved.
         </div>
       </div>
     </footer>
