@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 export const metadata: Metadata = {
   title: {
-    default: "AlexTec | AI, Web Development & Software Tutorials",
-    template: "%s | AlexTec",
+    default: "AlexxTech | AI, Web Development & Software Tutorials",
+    template: "%s | AlexxTech",
   },
   description:
     "Practical tutorials on AI tools, web development, JavaScript, Next.js, Node.js and SaaS for beginners and intermediate developers.",
@@ -32,15 +32,15 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Abdullah" }],
   openGraph: {
-    title: "AlexTec | AI, Web Development & Software Tutorials",
+    title: "AlexxTech | AI, Web Development & Software Tutorials",
     description:
       "Practical tutorials on AI tools, web development, JavaScript, Next.js, Node.js and SaaS.",
-    siteName: "AlexTec",
+    siteName: "AlexxTech",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AlexTec | AI, Web Development & Software Tutorials",
+    title: "AlexxTech | AI, Web Development & Software Tutorials",
     description:
       "Practical tutorials on AI tools, web development, JavaScript, Next.js, Node.js and SaaS.",
   },
